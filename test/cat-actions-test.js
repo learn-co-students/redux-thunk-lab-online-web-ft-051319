@@ -4,6 +4,7 @@ import * as actions from '../src/actions/catActions'
 import { expect } from 'chai'
 import nock from 'nock'
 import fetch from 'isomorphic-fetch';
+import fetchCats from '../src/actions/catActions'
 
 
 // change to redux thunk
@@ -27,14 +28,14 @@ describe('async actions', () => {
     const scope = nock('https://learn-co-curriculum.github.io')
       .get('/cat-api/cats.json')
       .reply(200, { images: [{url: "www.example.com/cat1"}, {url: 'www.example.com/cat2'}] })
-    
+
     const expectedActions = [
       { type: 'LOADING_CATS' },
       { type: "ADD_CATS", cats: catPics }
     ]
 
     const store = mockStore({})
-    await store.dispatch(actions.fetchCats())
+    await store.dispatch(fetchCats())
     await sleep(2000)
     expect(store.getActions()).to.eql(expectedActions)
   })
